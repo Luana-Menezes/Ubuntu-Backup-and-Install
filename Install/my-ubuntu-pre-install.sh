@@ -32,7 +32,10 @@ echo "📥 Install snap packages"
 sudo snap install discord
 sudo snap install telegram-desktop 
 sudo snap install spotify
-	
+sudo snap install onlyoffice-desktopeditors
+sudo snap install cura-slicer
+
+echo "📥 Install deb packages"	
 echo "📥 Install VSCode"
 wget "https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-x64" -O ~/Downloads/vscode.deb
 sudo apt install -y ~/Downloads/vscode.deb
@@ -74,3 +77,4 @@ echo "Git SSH Public Key:"
 cat ~/.ssh/id_ed25519.pub
 
 echo "🔧 Finished Ubuntu setup successfully 🔧"
+
