@@ -1,22 +1,26 @@
 #!/bin/bash
 set -e
 
-echo "📦 Backing up GNOME Shell environment and settings..."
+echo "📦 Backing up GNOME Shell environment, settings, and VSCode extensions..."
 
 BACKUP_DIR=~/gnome-backup
 mkdir -p "$BACKUP_DIR"
 
-# Export enabled GNOME extensions
-echo "📄 Saving list of enabled extensions..."
+echo "📄 Saving list of gnome enabled extensions..."
 gnome-extensions list --enabled > "$BACKUP_DIR/gnome-extensions.txt"
 
-# Export GNOME extension settings
-echo "⚙️ Backing up extension settings (dconf)..."
+echo "⚙️ Backing up gnome extension settings (dconf)..."
 dconf dump /org/gnome/shell/extensions/ > "$BACKUP_DIR/gnome-extensions-settings.dconf"
 
-# Backup personal dotfiles
-echo "📝 Backing up dotfiles (.zshrc, .gitconfig)..."
+echo "📄 Backing up dotfiles (.zshrc, .gitconfig)..."
 cp ~/.gitconfig "$BACKUP_DIR/" 2>/dev/null || echo "⚠️ Some dotfiles not found"
+
+echo "📄 Exporting VS Code extensions list..."
+if code --list-extensions > "$BACKUP_DIR/vscode-extensions.txt"; then
+	echo "VS Code extensions saved to $BACKUP_DIR/vscode-extensions.txt"
+else
+	echo "⚠️ Could not export VS Code extensions using code command"
+fi
 
 echo "✅ All backups saved to $BACKUP_DIR"
 

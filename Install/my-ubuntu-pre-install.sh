@@ -1,6 +1,12 @@
 #!/bin/bash
 set -e
 
+VSCODE_EXTENSIONS_FILE="$(dirname "$0")/vscode-extensions.txt"
+if [ ! -f "$VSCODE_EXTENSIONS_FILE" ]; then
+    echo "VSCode extensions file not found at $VSCODE_EXTENSIONS_FILE"
+    exit 1
+fi
+
 CONFIG_FILE="$(dirname "$0")/.my-ubuntu-config"
 if [ -f "$CONFIG_FILE" ]; then
     source "$CONFIG_FILE"
@@ -36,19 +42,22 @@ sudo snap install onlyoffice-desktopeditors
 sudo snap install cura-slicer
 
 echo "📥 Install deb packages"	
-echo "📥 Install VSCode"
+echo "📥 VSCode"
 wget "https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-x64" -O ~/Downloads/vscode.deb
 sudo apt install -y ~/Downloads/vscode.deb
 
-echo "📥 Install Docker"
+echo "📦 Installing VSCode extensions from vscode-extensions.txt"
+cat "$VSCODE_EXTENSIONS_FILE" | xargs -L 1 code --install-extension
+
+echo "📥 Docker"
 curl -fsSL https://get.docker.com | sudo sh
 sudo usermod -aG docker $USER
 
-echo "📥 Install Chrome"
+echo "📥 Chrome"
 wget "https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb" -O ~/Downloads/chrome.deb
 sudo apt -y install ~/Downloads/chrome.deb
 
-echo "📥 Install Zoom"
+echo "📥 Zoom"
 wget "https://zoom.us/client/latest/zoom_amd64.deb" -O ~/Downloads/zoom_amd64.deb
 sudo apt install ~/Downloads/zoom_amd64.deb
 
